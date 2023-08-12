@@ -22,6 +22,15 @@ const userShema = new Schema(
 		salt: {
 			type: String,
 			requried: true
+		},
+		posts: {
+			type: [
+				{
+					type: Object,
+					ref: 'Post'
+				}
+			],
+			default: []
 		}
 	},
 	{

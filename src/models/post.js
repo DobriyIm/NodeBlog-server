@@ -1,5 +1,4 @@
 import { Schema, model } from 'mongoose';
-import validators from 'mongoose-validators';
 
 const { ObjectId } = Schema.Types;
 
@@ -15,10 +14,9 @@ const postSchema = new Schema(
 		},
 		images: {
 			type: [String],
-			required: false,
 			validate: [
-				validators.maxLength(5),
-				'Max length must be less than 5 elements'
+				arr => arr.length <= 5,
+				'{PATH} exceeds the limit of 5'
 			]
 		},
 		userId: {
