@@ -17,6 +17,14 @@ const commentShema = new Schema(
 			type: ObjectId,
 			ref: 'Post',
 			required: true
+		},
+		likes: {
+			type: Number,
+			default: 0
+		},
+		deslikes: {
+			type: Number,
+			default: 0
 		}
 	},
 	{

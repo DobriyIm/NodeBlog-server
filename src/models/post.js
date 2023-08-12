@@ -31,6 +31,15 @@ const postSchema = new Schema(
 		dislikes: {
 			type: Number,
 			default: 0
+		},
+		comments: {
+			type: [
+				{
+					type: ObjectId,
+					ref: 'Comment'
+				}
+			],
+			default: []
 		}
 	},
 	{

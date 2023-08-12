@@ -10,7 +10,7 @@ const createOne = async postData => {
 		if (!existingUser) {
 			throw {
 				status: 404,
-				message: `User with id '${id}' not found`
+				message: `User with id '${userId}' not found`
 			};
 		}
 
