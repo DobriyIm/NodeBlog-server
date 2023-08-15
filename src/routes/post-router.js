@@ -1,4 +1,5 @@
 import { Router } from 'express';
+import { authenticate } from '../controllers/auth-controller.js';
 import controller from '../controllers/post-controller.js';
 
 const postRouter = new Router();
@@ -6,11 +7,11 @@ const postRouter = new Router();
 postRouter
 	.route('/')
 	.get(controller.getAll)
-	.post(controller.createOne);
+	.post(authenticate, controller.createOne);
 
 postRouter
 	.route('/:id')
 	.get(controller.getOne)
-	.delete(controller.deleteOne);
+	.delete(authenticate, controller.deleteOne);
 
 export default postRouter;
