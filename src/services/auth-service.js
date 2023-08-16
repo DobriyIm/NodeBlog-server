@@ -1,5 +1,11 @@
+import crypto from 'crypto';
 import User from '../models/user.js';
-import { JWT_OPTIONS, signJWT, verifyJWT } from '../utils.js';
+import {
+	JWT_OPTIONS,
+	hashPassword,
+	signJWT,
+	verifyJWT
+} from '../utils.js';
 import userService from './user-service.js';
 
 const signup = async userData => {
@@ -25,7 +31,18 @@ const login = async loginData => {
 				message: `User with email ${login} not found.`
 			};
 		}
-		if (password != foundUser.password) {
+
+		const savedPassword = Buffer.from(foundUser.password, 'hex');
+
+		const hashedPassword = await hashPassword(
+			password,
+			Buffer.from(foundUser.salt, 'hex'),
+			1000,
+			32,
+			'sha512'
+		);
+
+		if (!crypto.timingSafeEqual(savedPassword, hashedPassword)) {
 			throw {
 				status: 400,
 				message: 'Incorrect password'

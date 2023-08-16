@@ -1,4 +1,7 @@
+import crypto from 'crypto';
+import Post from '../models/post.js';
 import User from '../models/user.js';
+import { hashPassword } from '../utils.js';
 
 const createOne = async userData => {
 	try {
@@ -12,6 +15,18 @@ const createOne = async userData => {
 				message: `User with email '${email}' already exists`
 			};
 		}
+
+		const salt = crypto.randomBytes(16);
+		const hashedPassword = await hashPassword(
+			userData.password,
+			salt,
+			1000,
+			32,
+			'sha512'
+		);
+
+		userData.password = hashedPassword.toString('hex');
+		userData.salt = salt.toString('hex');
 
 		return await User.create(userData);
 	} catch (err) {
@@ -63,6 +78,8 @@ const deleteOne = async id => {
 				message: `User with id '${id}' not found`
 			};
 		}
+
+		await Post.deleteMany({ userId: id });
 
 		await foundUser.deleteOne();
 	} catch (err) {

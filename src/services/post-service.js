@@ -69,11 +69,11 @@ const deleteOne = async id => {
 			};
 		}
 
-		const publisher = await User.findById(foundPost.userId);
+		//const publisher = await User.findById(foundPost.userId);
 
-		await publisher.updateOne({
-			$pull: { posts: foundPost.id }
-		});
+		// await publisher.updateOne({
+		// 	$pull: { posts: foundPost.id }
+		// });
 
 		await foundPost.deleteOne();
 	} catch (err) {
