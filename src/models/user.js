@@ -19,10 +19,6 @@ const userShema = new Schema(
 			type: String,
 			required: true
 		},
-		salt: {
-			type: String,
-			requried: true
-		},
 		posts: {
 			type: [
 				{

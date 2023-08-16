@@ -1,7 +1,6 @@
-import crypto from 'crypto';
 import Post from '../models/post.js';
 import User from '../models/user.js';
-import { hashPassword } from '../utils.js';
+import { genSalt, hashPassword } from '../utils.js';
 
 const createOne = async userData => {
 	try {
@@ -16,17 +15,13 @@ const createOne = async userData => {
 			};
 		}
 
-		const salt = crypto.randomBytes(16);
+		const salt = await genSalt(10);
 		const hashedPassword = await hashPassword(
 			userData.password,
-			salt,
-			1000,
-			32,
-			'sha512'
+			salt
 		);
 
-		userData.password = hashedPassword.toString('hex');
-		userData.salt = salt.toString('hex');
+		userData.password = hashedPassword;
 
 		return await User.create(userData);
 	} catch (err) {

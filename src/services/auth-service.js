@@ -2,9 +2,9 @@ import crypto from 'crypto';
 import User from '../models/user.js';
 import {
 	JWT_OPTIONS,
-	hashPassword,
 	signJWT,
-	verifyJWT
+	verifyJWT,
+	verifyPassword
 } from '../utils.js';
 import userService from './user-service.js';
 
@@ -32,17 +32,9 @@ const login = async loginData => {
 			};
 		}
 
-		const savedPassword = Buffer.from(foundUser.password, 'hex');
+		const savedPassword = foundUser.password;
 
-		const hashedPassword = await hashPassword(
-			password,
-			Buffer.from(foundUser.salt, 'hex'),
-			1000,
-			32,
-			'sha512'
-		);
-
-		if (!crypto.timingSafeEqual(savedPassword, hashedPassword)) {
+		if (!(await verifyPassword(password, savedPassword))) {
 			throw {
 				status: 400,
 				message: 'Incorrect password'

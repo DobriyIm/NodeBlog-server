@@ -1,4 +1,4 @@
-import crypto from 'crypto';
+import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import { promisify } from 'util';
 
@@ -11,4 +11,8 @@ export const signJWT = promisify(jwt.sign);
 
 export const verifyJWT = promisify(jwt.verify);
 
-export const hashPassword = promisify(crypto.pbkdf2);
+export const genSalt = promisify(bcrypt.genSalt);
+
+export const hashPassword = promisify(bcrypt.hash);
+
+export const verifyPassword = promisify(bcrypt.compare);
